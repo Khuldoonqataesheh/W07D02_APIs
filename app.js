@@ -4,7 +4,7 @@ const app = express();
 const port = 5000;
 
 const todos = [
-  { todo: " wakeup", isCompleted: false },
+  { todo: "wake up", isCompleted: false },
   { todo: "Eat Breakfast", isCompleted: false },
 ];
 
@@ -30,15 +30,32 @@ app.put("/update/todo/:name", (req, res) => {
   });
   if (found) {
     res.status(200);
-   /* const todo = req.body.todo;
+   const todo = req.body.todo;
     const isCompleted = req.body.isCompleted;
-    const newTodo = { todo, isCompleted };*/
-    res.json('1');
+    const newTodo = { todo, isCompleted };
+    res.json(newTodo);
   } else {
     res.status(404);
     res.json("todo not found");
   }
 });
+app.delete("/delete/todo/:name", (req, res) => {
+    const name = req.params.name;
+    const found = todos.filter((element,i) => {
+        if(element.todo === name){
+            
+            return element;
+        } 
+          });
+    if (found) {
+      res.status(200);
+    
+      res.json(found);
+    } else {
+      res.status(404);
+      res.json("todo not found");
+    }
+  });
 app.listen(port, () => {
   console.log(`the server run on http://localhost:${port}`);
 });
