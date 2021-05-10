@@ -30,7 +30,7 @@ app.put("/update/todo/:name", (req, res) => {
   });
   if (found) {
     res.status(200);
-   const todo = req.body.todo;
+    const todo = req.body.todo;
     const isCompleted = req.body.isCompleted;
     const newTodo = { todo, isCompleted };
     res.json(newTodo);
@@ -40,22 +40,45 @@ app.put("/update/todo/:name", (req, res) => {
   }
 });
 app.delete("/delete/todo/:name", (req, res) => {
-    const name = req.params.name;
-    const found = todos.filter((element,i) => {
-        if(element.todo === name){
-            
-            return element;
-        } 
-          });
-    if (found) {
-      res.status(200);
-    
-      res.json(found);
-    } else {
-      res.status(404);
-      res.json("todo not found");
+  const name = req.params.name;
+  let x;
+  const found = todos.filter((element, i) => {
+    if (element.todo === name) {
+      x = i;
+      return element;
     }
   });
+  todos.splice(x);
+  if (found) {
+    res.status(200);
+    res.json(found);
+  } else {
+    res.status(404);
+    res.json("todo not found");
+  }
+});
+app.put("/complete/todo/:name", (req, res) => {
+  const name = req.params.name;
+  let x;
+  const found = todos.filter((element, i) => {
+    if (element.todo === name) {
+      x = i;
+      return element;
+    }
+  });
+  todos[x].isCompleted = true;
+  if (found) {
+    res.status(200);
+
+    res.json(todos);
+  } else {
+    res.status(404);
+    res.json("todo not found");
+  }
+});
+app.get("/completed/todos", (req, res) => {
+  res.json(todos);
+});
 app.listen(port, () => {
   console.log(`the server run on http://localhost:${port}`);
 });
