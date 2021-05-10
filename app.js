@@ -6,6 +6,7 @@ const port = 5000;
 const todos = [
   { todo: "wake up", isCompleted: false },
   { todo: "Eat Breakfast", isCompleted: false },
+
 ];
 
 app.use(express.json());
@@ -77,7 +78,15 @@ app.put("/complete/todo/:name", (req, res) => {
   }
 });
 app.get("/completed/todos", (req, res) => {
-  res.json(todos);
+    
+    const found = todos.filter((element, i) => {
+        if (element.isCompleted === true) {
+         
+          return element;
+        }
+      });
+     
+  res.json(found);
 });
 app.listen(port, () => {
   console.log(`the server run on http://localhost:${port}`);
